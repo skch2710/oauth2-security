@@ -50,7 +50,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-import com.auth.oauth2security.dao.EmployeeDAO;
 import com.auth.oauth2security.service.JpaUserDetailsManager;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -63,7 +62,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 public class SecurityConfig {
 	
 	@Autowired
-	private EmployeeDAO userRepository;
+	private JpaUserDetailsManager jpaUserDetailsManager;
 
 	@Bean 
 	@Order(1)
@@ -120,7 +119,7 @@ public class SecurityConfig {
 	
 	@Bean
 	UserDetailsManager userDetailsService() {
-		return new JpaUserDetailsManager(userRepository);
+		return jpaUserDetailsManager;
 	}
 
 	@Bean 

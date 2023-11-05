@@ -3,6 +3,7 @@ package com.auth.oauth2security.service;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -14,13 +15,11 @@ import org.springframework.stereotype.Service;
 import com.auth.oauth2security.dao.EmployeeDAO;
 import com.auth.oauth2security.model.Employee;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Service
 public class JpaUserDetailsManager implements UserDetailsManager {
 
-	private final EmployeeDAO userRepository;
+	@Autowired
+	private EmployeeDAO userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
