@@ -1,6 +1,9 @@
 server:
   port: 8060
-  
+
+app:
+  auth-id: sathish_ch
+  auth-cred: $2a$10$OeZfp.6TtOhTQgO8DaUw8OJV4cqxQ3fZdLjUDUb46ZD/S6Z3aW1zq
 spring:
   datasource:
     password: ${DB_PASSWORD}

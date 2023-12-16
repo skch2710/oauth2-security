@@ -26,7 +26,7 @@ public class CustomGrantAuthenticationConverter implements AuthenticationConvert
 	public Authentication convert(HttpServletRequest request) {
 
 		String grantType = request.getParameter(OAuth2ParameterNames.GRANT_TYPE);
-		if (!"password".equals(grantType)) {
+		if (!"custom_pwd".equals(grantType)) {
 			return null;
 		}
 		Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();

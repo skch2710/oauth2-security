@@ -10,6 +10,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -60,6 +61,12 @@ import com.nimbusds.jose.proc.SecurityContext;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	@Value("${app.auth-id}")
+	private String clientId;
+	
+	@Value("${app.auth-cred}")
+	private String clientCred;
 	
 	@Autowired
 	private JpaUserDetailsManager jpaUserDetailsManager;
@@ -125,13 +132,13 @@ public class SecurityConfig {
 	@Bean 
 	RegisteredClientRepository registeredClientRepository() {
 		RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("sathish_ch")
-				.clientSecret(passwordEncoder().encode("password"))
+				.clientId(clientId)
+				.clientSecret(clientCred)
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.authorizationGrantType(new AuthorizationGrantType("password"))
+				.authorizationGrantType(new AuthorizationGrantType("custom_pwd"))
 				.redirectUri("http://127.0.0.1:8080/login/oauth2")
 				.postLogoutRedirectUri("http://127.0.0.1:8080/")
 				.scope(OidcScopes.OPENID).scope(OidcScopes.PROFILE)
@@ -139,7 +146,6 @@ public class SecurityConfig {
 				.clientSettings(ClientSettings.builder().requireProofKey(true).requireAuthorizationConsent(false).build())
 				.tokenSettings(TokenSettings.builder().accessTokenTimeToLive(Duration.ofHours(24)).build())
 				.build();
-
 		return new InMemoryRegisteredClientRepository(oidcClient);
 	}
 
